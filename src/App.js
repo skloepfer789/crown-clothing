@@ -34,6 +34,8 @@ class App extends React.Component {
               ...snapShot.data()
             }
           });
+
+          console.log(this.state);
         });
       }
       //if user is null, reset function (on logout)
