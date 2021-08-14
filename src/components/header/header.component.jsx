@@ -10,7 +10,7 @@ import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
 
 
-const Header = ({currentUser}) => (
+const Header = ({currentUser, hidden}) => (
     <header className='header'>
         <Link to='/' className='logo-container'>
             <Logo className='logo'></Logo>
@@ -27,12 +27,15 @@ const Header = ({currentUser}) => (
             }
             <CartIcon/>
         </div>
-        <CartDropdown />
+        {
+            hidden ? null : <CartDropdown />
+        }
     </header>
 );
 
-const mapStateToProps = state => ({
-    currentUser: state.user.currentUser
+const mapStateToProps = ({user:{currentUser}, cart:{hidden}}) => ({
+    currentUser,
+    hidden
 })
 
 export default connect(mapStateToProps)(Header);
