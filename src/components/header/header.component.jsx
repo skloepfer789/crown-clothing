@@ -6,10 +6,11 @@ import { createStructuredSelector } from 'reselect';
 
 import {ReactComponent as Logo} from '../../assets/crown.svg';
 import CartIcon from '../cart-icon/cart-icon.component';
-import './header.styles.scss';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import { selectCartHidden } from '../../redux/cart/cart.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selector';
+
+import './header.styles.scss';
 
 const Header = ({currentUser, hidden}) => (
     <header className='header'>
