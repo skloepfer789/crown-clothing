@@ -1,0 +1,35 @@
+.stripeButton {
+    min-width: 90px!important;
+    width: auto!important;
+    height: 50px!important;
+    letter-spacing: 0.5px!important;
+    line-height: 50px!important;
+    padding: 0 35px 0 35px!important;
+    font-size: 15px!important;
+    background: black!important;
+    border: 1px solid black!important;
+    text-transform: uppercase!important;
+    font-family: 'Open Sans Condensed'!important;
+    font-weight: 300!important;
+    cursor: pointer!important;
+    display: flex!important;
+    justify-content: center!important;
+    border-radius: none!important;
+    display: flex!important;
+    flex-direction: column!important;
+    text-align: center!important;
+
+    span {
+        background: none!important;
+        border: none!important;
+        box-shadow: none!important;
+    }
+    
+    &:hover {
+        background-color: white!important;
+
+        span {
+            color: black!important;
+        }
+    }
+}
