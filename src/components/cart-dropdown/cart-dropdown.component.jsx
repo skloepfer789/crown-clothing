@@ -24,12 +24,10 @@ const  CartDropdown = ({cartItems, history, dispatch}) => (
         </div>
         { //not original code, added a selective render of checkout button, only if cart has items
             cartItems.length ? (
-                cartItems.map(cartItem => (
                     <CustomButton onClick={() => {
                         history.push('/checkout');
                         dispatch(toggleCartHidden());
                     }}>GO TO CHECKOUT</CustomButton>
-            ))
             ):(
                 null
             )
