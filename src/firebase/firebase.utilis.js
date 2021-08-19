@@ -15,7 +15,7 @@ const config = {
 export const createUserProfileDocument = async (userAuth, additionalData) => {
     if(!userAuth) return;
 
-    const userRef = firestore.doc(`users/${userAuth.uid}`)
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
 
     const snapShot = await userRef.get();
 
@@ -37,6 +37,44 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
     return userRef;
 }
+
+/*
+//exporting data to firebase. Don't reuse
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  const batch = firestore.batch();
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+  });
+
+  return await batch.commit();
+
+}
+*/
+
+//pulls collections from DB and makes them usable.
+export const convertCollectionShapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map(doc => {
+    const {title, items} = doc.data();
+
+    return {
+      //encodeURI passes a string, and takes out any symbols a URL can't process. This will remove caps etc.
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+      //this creates an array, next needs to be an object map
+    };
+  });
+
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  } , {});
+
+};
 
 firebase.initializeApp(config);
 
