@@ -2,11 +2,12 @@ import { createStore, applyMiddleware } from "redux";
 //install redux persist "yarn add redux-persist" for local and session storage
 import { persistStore } from "redux-persist";
 import logger from 'redux-logger';
+import thunk from "redux-thunk";
 
 import rootReducer from "./root-reducer";
 
 //set up our middleware
-const middlewares = [];
+const middlewares = [thunk];
 
 //only use middleware in dev. enviorment, not deploy
 if(process.env.NODE_ENV === 'development') {

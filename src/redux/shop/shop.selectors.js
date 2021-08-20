@@ -20,3 +20,14 @@ export const selectCollectionsForPreview = createSelector(
     collections => 
     collections ? Object.keys(collections).map(key => collections[key]) : []
 );
+
+export const selectIsCollectionFetching = createSelector(
+    [selectShop],
+    shop => shop.isFetching
+);
+
+export const selectIsCollectionsLoaded = createSelector(
+    [selectShop],
+    shop => !!shop.collections
+    //!! 'double bang' converts anything into a boolean (t or f) 0, null, empty strings all go false. 1, words in string, objects all go true. So this test if we have shop data, if we do, it says true, if we don't we get false.
+)
