@@ -1,4 +1,4 @@
-import { takeEvery, call, put } from "redux-saga/effects";
+import { takeLatest, call, put } from "redux-saga/effects";
 
 import { firestore, convertCollectionShapshotToMap } from "../../firebase/firebase.utilis";
 
@@ -25,7 +25,7 @@ export function* fetchCollectionsAsync() {
 export function* fetchCollectionsStart() {
     //yeild pauses function after each call. Then finishes after last yeild
     //takeEvery is a non-blocking code. Code doesn't stop while the calls take effect. This way code works while the collections are fetching. You can also CANCEL functions coming out of the saga. Sagas work like async code, but technically are not, since they are encapsulated in the reducers
-    yield takeEvery(
+    yield takeLatest(
         ShopActionTypes.FETCH_COLLECTIONS_START, fetchCollectionsAsync
     );
 }
