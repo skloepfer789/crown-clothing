@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 
 import CollectionsOveriewContainer from '../../components/collections-overview/collections-overview.component';
+
 import CollectionPageContainer from '../collection/collection.container';
 
 class ShopPage extends React.Component {

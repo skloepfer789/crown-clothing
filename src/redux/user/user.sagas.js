@@ -2,22 +2,33 @@ import { takeLatest, put, all, call } from "redux-saga/effects";
 
 import UserActionTypes from "./user.types";
 
-import { googleSignInSuccess, googleSignInFailure } from "./user.actions";
+import { SignInSuccess, SignInFailure, signOutFailure, signOutSuccess } from "./user.actions";
 
-import { auth, googleProvider, createUserProfileDocument } from "../../firebase/firebase.utilis";
+import { 
+    auth, 
+    googleProvider, 
+    createUserProfileDocument, 
+    getCurrentUser 
+} from "../../firebase/firebase.utilis";
 
-import userReducer from "./user.reducer";
+export function* getSnapshotFromUserAuth(userAuth){
+    try{
+        const userRef = yield call(createUserProfileDocument, userAuth);
+        const userSnapshot = yield userRef.get();
+        yield put(
+            SignInSuccess({id: userSnapshot.id, ...userSnapshot.data()})
+        );
+    } catch(error) {
+        yield put(SignInFailure(error));
+    }
+}
 
 export function* signInWithGoogle() {
     try {
         const {user} = yield auth.signInWithPopup(googleProvider);
-        const userRef = yield call(createUserProfileDocument, user);
-        const userSnapshot = yield userRef.get();
-        yield put(
-            googleSignInSuccess({id: userSnapshot.id, ...userSnapshot.data()})
-        );
+        yield getSnapshotFromUserAuth(user);
     } catch(error) {
-        yield put(googleSignInFailure(error));
+        yield put(SignInFailure(error));
     }
 }
 
@@ -25,6 +36,52 @@ export function* onGoogleSignInStart() {
     yield takeLatest(UserActionTypes.GOOGLE_SIGN_IN_START, signInWithGoogle);
 }
 
+export function* signInWithEmail({payload: {email, password}}) {
+    try{
+        const {user} = yield auth.signInWithEmailAndPassword(email, password);
+        yield getSnapshotFromUserAuth(user);
+    } catch(error) {
+        yield put(SignInFailure(error));
+    }
+}
+
+export function* onEmailSignInStart() {
+    yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, signInWithEmail);
+}
+
+//create new firebase util to leverage existing code to check user.
+export function* isUserAuthenticated() {
+    try {
+        const userAuth = yield getCurrentUser();
+        if (!userAuth) return;
+        yield getSnapshotFromUserAuth(userAuth);
+    } catch(error) {
+        yield put(SignInFailure(error))
+    }
+}
+
+export function* onCheckUserSession() {
+    yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated)
+}
+
+export function* signOut() {
+    try {
+        yield auth.signOut();
+        yield put(signOutSuccess())
+    } catch(error) {
+        yield put(signOutFailure(error));
+    }
+}
+
+export function* onSignOutStart() {
+    yield takeLatest(UserActionTypes.SIGN_OUT_START, signOut)
+}
+
 export function* userSagas() {
-    yield all([call(onGoogleSignInStart)]);
+    yield all([
+        call(onGoogleSignInStart),
+        call(onEmailSignInStart),
+        call(onCheckUserSession),
+        call(onSignOutStart)
+    ]);
 };
