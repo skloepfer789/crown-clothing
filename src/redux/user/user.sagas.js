@@ -17,7 +17,14 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData){
         const userSnapshot = yield userRef.get();
         yield put(
             SignInSuccess({id: userSnapshot.id, ...userSnapshot.data()})
-        );
+        )
+
+        if (SignInSuccess()) {
+            yield new Promise((resolve) => {
+                window.alert(`Welcome to Crown Clothing`);
+            });
+        }
+        
     } catch(error) {
         yield put(SignInFailure(error));
     }
@@ -67,7 +74,12 @@ export function* onCheckUserSession() {
 export function* signOut() {
     try {
         yield auth.signOut();
-        yield put(signOutSuccess())
+        yield put(signOutSuccess());
+        if (signOutSuccess()) {
+            yield new Promise((resolve) => {
+                window.alert('You have Signed Out');
+            });
+        }
     } catch(error) {
         yield put(signOutFailure(error));
     }
@@ -98,7 +110,7 @@ export function* signInAfterSignUp({payload: {user, additionalData}}) {
 }
 
 export function* onSignUpSuccess() {
-    yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp)
+    yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp);
 }
 
 export function* userSagas() {
