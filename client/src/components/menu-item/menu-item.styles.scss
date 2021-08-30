@@ -33,6 +33,13 @@
         margin-left: 7.5px;
     }
 
+    @media screen and (max-width: 800px) {
+        height: 180px;
+        &.large {
+            height: 180px;
+        }
+    }
+
     .background-image {
         width: 100%;
         height: 100%;

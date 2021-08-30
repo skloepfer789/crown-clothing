@@ -51,4 +51,17 @@
         }
     }
 
+    @media screen and (max-width: 800px) {
+        min-width: 40vw;
+        height: 250px;
+        display: inline-block;
+        &:hover {
+            opacity: unset;
+        }
+
+        button {
+            opacity: unset;
+        }
+    }
+
 }
