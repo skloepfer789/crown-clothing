@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components';
 const invertedButtonStyles = css`
     background: white;
     color: black;
-    border: 1px solid black;
+    width: 100%;
 
     &:hover {
         background-color: black;
@@ -61,5 +61,8 @@ export const CustomButtonContainer = styled.button `
 
     @media screen and (max-width: 800px) {
         padding: 0 15px;
+        margin-top: 15px;
+        width: 80%;
+        margin-left: 10%;
     }
 `;
