@@ -6,6 +6,8 @@ const express = require('express');
 //const bodyParser = require('body-parser');
     //bodyParser depereciated, use express in place
 const path = require('path');
+//to compress code on export
+const compression = require('compression');
 
 if(process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -16,6 +18,8 @@ const app = express();
 //if a port is listed in ENV it uses that, otherwise it uses port 5000, while primary app runs on 3000. Then set in 'proxy' on the app (client/package.json) to port 5000
 const port = process.env.PORT || 5000;
 
+//fires off the compression on app
+app.use(compression());
 //app.use(bodyParser.json());
 app.use(express.json());
 //app.use(bodyParser.urlencoded({ extended: true }));
