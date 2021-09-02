@@ -18,4 +18,5 @@ const CartItem = ({ item: { imageUrl, price, name, quantity } }) => (
   </CartItemContainer>
 );
 
-export default CartItem;
+export default React.memo(CartItem);
+//memo keeps item from rerendering on each added item.
